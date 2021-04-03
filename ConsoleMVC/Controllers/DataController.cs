@@ -13,13 +13,15 @@ namespace Controllers
     {
         WebbShopAPI webAPI;
         private static Timer aTimer;
+
+#region internal Methods
         internal DataController()
         {
-            webAPI = new WebbShopAPI();           
+            webAPI = new WebbShopAPI();
         }
 
         /// <summary>
-        /// Logs the user into database. by Logindetails provided to the moethod.
+        /// Logs the user into database. by Logindetails provided in the parameters of the method
         /// </summary>
         /// <param name="details"></param>
         /// <param name="userId"></param>
@@ -32,12 +34,12 @@ namespace Controllers
             //Convert from int? to int.
             userId = ConvertToInteger(webAPI.Login(details.UserName, details.Password));
 
-            if(userId != 0)
+            if (userId != 0)
             {
                 SetTimer(userId);
                 return true;
             }
-            else 
+            else
             {
                 errorMsg = "Failed to login.";
                 return false;
@@ -45,7 +47,7 @@ namespace Controllers
         }
 
         /// <summary>
-        /// Registers the user to the database by login details provided to the method. Method calls WebbShopAPI method for register. 
+        /// Registers the user to the database by login details in the paramaters of the method. Method calls WebbShopAPI method for register. 
         /// </summary>
         /// <param name="details"></param>
         /// <param name="errorMsg"></param>
@@ -55,9 +57,9 @@ namespace Controllers
             errorMsg = "";
 
             // Just to be sure. Sometimes you dont know if APIs written by other people checks the passwords. I know mine does but better safe than sorry.
-            if(details.Password == details.VerifiedPassword)
+            if (details.Password == details.VerifiedPassword)
             {
-                if(webAPI.Register(details.UserName, details.Password, details.VerifiedPassword))
+                if (webAPI.Register(details.UserName, details.Password, details.VerifiedPassword))
                 {
                     return true;
                 }
@@ -74,9 +76,9 @@ namespace Controllers
                 return false;
             }
         }
-        
+
         /// <summary>
-        /// Logs the user out from the database by user ID input.
+        /// Logs the user out from the database by user ID input in the parameters.
         /// </summary>
         /// <param name="userId"></param>
         /// <returns>True if successful, else false</returns>
@@ -84,7 +86,7 @@ namespace Controllers
         {
             webAPI.Logout(userId);
             string check = webAPI.Ping(userId);
-            if(check != "Pong")
+            if (check != "Pong")
             {
                 return true;
             }
@@ -95,9 +97,14 @@ namespace Controllers
             }
         }
 
+        /// <summary>
+        /// Checks if user by method parameter are admin in the database.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>True if successful, else false</returns>
         internal bool IsUserAdmin(int userId)
         {
-            if(webAPI.IsUserAdmin(userId))
+            if (webAPI.IsUserAdmin(userId))
             {
                 return true;
             }
@@ -107,12 +114,19 @@ namespace Controllers
             }
         }
 
+        /// <summary>
+        /// Checks whether the session is active for the userid in the parameter
+        /// Calls the Ping() method from WebbShopAPI class.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="errorMsg"></param>
+        /// <returns>True if successfull, else false</returns>
         internal bool IsSessionActive(int userId, out string errorMsg)
         {
             errorMsg = "";
             string answer = webAPI.Ping(userId);
 
-            if(answer == "Pong")
+            if (answer == "Pong")
             {
                 return true;
             }
@@ -122,27 +136,37 @@ namespace Controllers
                 return false;
             }
         }
+        
+        /// <summary>
+        /// Returns the specific category searched for as string in the parameters
+        /// Also checks if the user is active on thier session.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="userId"></param>
+        /// <param name="userIsInactive"></param>
+        /// <param name="errorMsgOut"></param>
+        /// <returns>A string with results, also returns out bool if user is active and out string errorMsg</returns>
         internal string GetSpecificCategory(string input, int userId, out bool userIsInactive, out string errorMsgOut)
         {
             userIsInactive = false;
             errorMsgOut = "";
 
-            if(!IsSessionActive(userId, out string errorMsgIn))
+            if (!IsSessionActive(userId, out string errorMsgIn))
             {
                 userIsInactive = true;
-                errorMsgOut ="";
+                errorMsgOut = "";
                 return "";
             }
             else
             {
-                string results ="ID CATEGORY\n";
+                string results = "ID CATEGORY\n";
                 var list = webAPI.GetCategories(input);
-                if(list != null)
+                if (list != null)
                 {
                     foreach (BookCategory s in list)
                     {
                         results += s.Id + ". " + s.Category + "\n";
-                        
+
                     }
                     return results;
                 }
@@ -154,12 +178,23 @@ namespace Controllers
                 }
             }
         }
+        
+        /// <summary>
+        /// Returns results of type string from the database by user input in the parameter
+        /// Also checks if the user is active
+        /// Then returns out bool if user is inactive, also returns out string errorMsg
+        /// </summary>
+        /// <param name="userInput"></param>
+        /// <param name="userId"></param>
+        /// <param name="userIsInactive"></param>
+        /// <param name="errorMsgOut"></param>
+        /// <returns>String of results from the database</returns>
         internal string GetBooksByCategoryId(int userInput, int userId, out bool userIsInactive, out string errorMsgOut)
         {
             userIsInactive = false;
             errorMsgOut = "";
 
-            if(!IsSessionActive(userId, out string errorMsgIn))
+            if (!IsSessionActive(userId, out string errorMsgIn))
             {
                 userIsInactive = true;
                 errorMsgOut = errorMsgIn;
@@ -169,13 +204,13 @@ namespace Controllers
             {
                 string results = "ID TITLE AUTHOR\n";
                 var list = webAPI.GetCategory(userInput);
-                if(list != null)
+                if (list != null)
                 {
                     foreach (Book b in list)
                     {
-                        
-                        results += b.Id + ". " + b.Title + " " +  b.Author + "\n";                    
-                    } 
+
+                        results += b.Id + ". " + b.Title + " " + b.Author + "\n";
+                    }
                     return results;
                 }
                 else
@@ -193,7 +228,7 @@ namespace Controllers
             userIsInactive = false;
             errorMsg = "";
 
-            if(!IsSessionActive(userId, out string errorMsgIn))
+            if (!IsSessionActive(userId, out string errorMsgIn))
             {
                 userIsInactive = true;
                 errorMsg = errorMsgIn;
@@ -201,7 +236,7 @@ namespace Controllers
             }
             else
             {
-                if(webAPI.ActivateUser(userId, setActiveUserId))
+                if (webAPI.ActivateUser(userId, setActiveUserId))
                 {
                     return true;
                 }
@@ -219,7 +254,7 @@ namespace Controllers
             userIsInactive = false;
             errorMsg = "";
 
-            if(!IsSessionActive(userId, out string errorMsgIn))
+            if (!IsSessionActive(userId, out string errorMsgIn))
             {
                 userIsInactive = true;
                 errorMsg = errorMsgIn;
@@ -227,7 +262,7 @@ namespace Controllers
             }
             else
             {
-                if(webAPI.InactivateUser(userId, setDeActivateUserId))
+                if (webAPI.InactivateUser(userId, setDeActivateUserId))
                 {
                     return true;
                 }
@@ -245,7 +280,7 @@ namespace Controllers
             userIsInactive = false;
             errorMsg = "";
 
-            if(!IsSessionActive(userId, out string errorMsgIn))
+            if (!IsSessionActive(userId, out string errorMsgIn))
             {
                 userIsInactive = true;
                 errorMsg = errorMsgIn;
@@ -253,7 +288,7 @@ namespace Controllers
             }
             else
             {
-                if(webAPI.Demote(userId, demoteUserId))
+                if (webAPI.Demote(userId, demoteUserId))
                 {
                     return true;
                 }
@@ -271,7 +306,7 @@ namespace Controllers
             userIsInactive = false;
             errorMsg = "";
 
-            if(!IsSessionActive(userId, out string errorMsgIn))
+            if (!IsSessionActive(userId, out string errorMsgIn))
             {
                 userIsInactive = true;
                 errorMsg = errorMsgIn;
@@ -279,7 +314,7 @@ namespace Controllers
             }
             else
             {
-                if(webAPI.Promote(userId, promoteUserId))
+                if (webAPI.Promote(userId, promoteUserId))
                 {
                     return true;
                 }
@@ -297,7 +332,7 @@ namespace Controllers
             userIsInactive = false;
             errorMsg = "";
 
-            if(!IsSessionActive(userId, out string errorMsgIn))
+            if (!IsSessionActive(userId, out string errorMsgIn))
             {
                 userIsInactive = true;
                 errorMsg = errorMsgIn;
@@ -307,7 +342,7 @@ namespace Controllers
             {
                 string results = "This is the best customer:\n";
                 var user = webAPI.BestCustomer(userId);
-                if(user != null)
+                if (user != null)
                 {
                     results += user.Name;
                     return results;
@@ -326,7 +361,7 @@ namespace Controllers
             userIsInactive = false;
             errorMsg = "";
 
-            if(!IsSessionActive(userId, out string errorMsgIn))
+            if (!IsSessionActive(userId, out string errorMsgIn))
             {
                 userIsInactive = true;
                 errorMsg = errorMsgIn;
@@ -346,7 +381,7 @@ namespace Controllers
             userIsInactive = false;
             errorMsg = "";
 
-            if(!IsSessionActive(userId, out string errorMsgIn))
+            if (!IsSessionActive(userId, out string errorMsgIn))
             {
                 userIsInactive = true;
                 errorMsg = errorMsgIn;
@@ -356,9 +391,9 @@ namespace Controllers
             {
                 string results = "SOLD BOOKS:\n";
                 var list = webAPI.SoldItems(userId);
-                if(list != null)
+                if (list != null)
                 {
-                    foreach(SoldBook b in list)
+                    foreach (SoldBook b in list)
                     {
                         results += $"{b.Title} - by {b.Author}\n";
                     }
@@ -378,7 +413,7 @@ namespace Controllers
             userIsInactive = false;
             errorMsg = "";
 
-            if(!IsSessionActive(userId, out string errorMsgIn))
+            if (!IsSessionActive(userId, out string errorMsgIn))
             {
                 userIsInactive = true;
                 errorMsg = errorMsgIn;
@@ -386,7 +421,7 @@ namespace Controllers
             }
             else
             {
-                if(webAPI.AddUser(userId, userName, password))
+                if (webAPI.AddUser(userId, userName, password))
                 {
                     return true;
                 }
@@ -413,7 +448,7 @@ namespace Controllers
             userIsInactive = false;
             errorMsg = "";
 
-            if(!IsSessionActive(userId, out string errorMsgIn))
+            if (!IsSessionActive(userId, out string errorMsgIn))
             {
                 userIsInactive = true;
                 errorMsg = errorMsgIn;
@@ -421,7 +456,7 @@ namespace Controllers
             }
             else
             {
-                if(webAPI.DeleteCategory(userId, catId))
+                if (webAPI.DeleteCategory(userId, catId))
                 {
                     return true;
                 }
@@ -439,7 +474,7 @@ namespace Controllers
             userIsInactive = false;
             errorMsg = "";
 
-            if(!IsSessionActive(userId, out string errorMsgIn))
+            if (!IsSessionActive(userId, out string errorMsgIn))
             {
                 userIsInactive = true;
                 errorMsg = errorMsgIn;
@@ -447,7 +482,7 @@ namespace Controllers
             }
             else
             {
-                if(webAPI.UpdateCategory(userId, catId, catName))
+                if (webAPI.UpdateCategory(userId, catId, catName))
                 {
                     return true;
                 }
@@ -465,7 +500,7 @@ namespace Controllers
             userIsInactive = false;
             errorMsg = "";
 
-            if(!IsSessionActive(userId, out string errorMsgIn))
+            if (!IsSessionActive(userId, out string errorMsgIn))
             {
                 userIsInactive = true;
                 errorMsg = errorMsgIn;
@@ -473,7 +508,7 @@ namespace Controllers
             }
             else
             {
-                if(webAPI.AddBookToCategory(userId, bookId, catId))
+                if (webAPI.AddBookToCategory(userId, bookId, catId))
                 {
                     return true;
                 }
@@ -491,7 +526,7 @@ namespace Controllers
             userIsInactive = false;
             errorMsg = "";
 
-            if(!IsSessionActive(userId, out string errorMsgIn))
+            if (!IsSessionActive(userId, out string errorMsgIn))
             {
                 userIsInactive = true;
                 errorMsg = errorMsgIn;
@@ -499,7 +534,7 @@ namespace Controllers
             }
             else
             {
-                if(webAPI.AddCategory(userId, catName))
+                if (webAPI.AddCategory(userId, catName))
                 {
                     return true;
                 }
@@ -509,7 +544,7 @@ namespace Controllers
                     Debug.WriteLine("webapi addcategory() returned false");
                     return false;
                 }
-            }         
+            }
         }
 
         internal bool DeleteBook(int userId, int bookId, out bool userIsInactive, out string errorMsg)
@@ -517,7 +552,7 @@ namespace Controllers
             userIsInactive = false;
             errorMsg = "";
 
-            if(!IsSessionActive(userId, out string errorMsgIn))
+            if (!IsSessionActive(userId, out string errorMsgIn))
             {
                 userIsInactive = true;
                 errorMsg = errorMsgIn;
@@ -525,7 +560,7 @@ namespace Controllers
             }
             else
             {
-                if(webAPI.DeleteBook(userId, bookId))
+                if (webAPI.DeleteBook(userId, bookId))
                 {
                     return true;
                 }
@@ -543,7 +578,7 @@ namespace Controllers
             userIsInactive = false;
             errorMsgOut = "";
 
-            if(!IsSessionActive(userId, out string errorMsgIn))
+            if (!IsSessionActive(userId, out string errorMsgIn))
             {
                 userIsInactive = true;
                 errorMsgOut = errorMsgIn;
@@ -551,7 +586,7 @@ namespace Controllers
             }
             else
             {
-                if(webAPI.UpdateBook(userId, bookId, titleName, authorName, price))
+                if (webAPI.UpdateBook(userId, bookId, titleName, authorName, price))
                 {
                     return true;
                 }
@@ -569,7 +604,7 @@ namespace Controllers
             userIsInactive = false;
             errorMsgOut = "";
 
-            if(!IsSessionActive(userId, out string errorMsgIn))
+            if (!IsSessionActive(userId, out string errorMsgIn))
             {
                 userIsInactive = true;
                 errorMsgOut = errorMsgIn;
@@ -579,18 +614,18 @@ namespace Controllers
             {
                 string results = $"Listing users from name search of {userName}:\n";
                 var list = webAPI.FindUser(userId, userName);
-                if(list != null)
+                if (list != null)
                 {
                     foreach (User u in list)
                     {
                         string active = "No";
-                        if(u.IsActive)
+                        if (u.IsActive)
                         {
                             active = "Yes";
                         }
 
-                        results += $"ID: {u.Id}\nUserName: {u.Name}\nActive: {active}\nLast login: {u.LastLogin.ToString()}\n";                       
-                    } 
+                        results += $"ID: {u.Id}\nUserName: {u.Name}\nActive: {active}\nLast login: {u.LastLogin.ToString()}\n";
+                    }
                     return results;
                 }
                 else
@@ -607,7 +642,7 @@ namespace Controllers
             userIsInactive = false;
             errorMsgOut = "";
 
-            if(!IsSessionActive(userId, out string errorMsgIn))
+            if (!IsSessionActive(userId, out string errorMsgIn))
             {
                 userIsInactive = true;
                 errorMsgOut = errorMsgIn;
@@ -617,18 +652,18 @@ namespace Controllers
             {
                 string results = "All the users in the database:\n";
                 var list = webAPI.ListUsers(userId);
-                if(list != null)
+                if (list != null)
                 {
                     foreach (User u in list)
                     {
                         string active = "No";
-                        if(u.IsActive)
+                        if (u.IsActive)
                         {
                             active = "Yes";
                         }
                         results += $"ID: {u.Id} UserName: {u.Name}, Active: {active}, Is admin: {u.IsAdmin.ToString()}\n";
-                        
-                    } 
+
+                    }
                     return results;
                 }
                 else
@@ -645,7 +680,7 @@ namespace Controllers
             userIsInactive = false;
             errorMsgOut = string.Empty;
 
-            if(!IsSessionActive(userId, out string errorMsgIn))
+            if (!IsSessionActive(userId, out string errorMsgIn))
             {
                 userIsInactive = true;
                 errorMsgOut = errorMsgIn;
@@ -653,7 +688,7 @@ namespace Controllers
             }
             else
             {
-                if(webAPI.SetAmount(userId, bookId, amount))
+                if (webAPI.SetAmount(userId, bookId, amount))
                 {
                     return true;
                 }
@@ -671,7 +706,7 @@ namespace Controllers
             userIsInactive = false;
             errorMsgOut = string.Empty;
 
-            if(!IsSessionActive(userId, out string errorMsgIn))
+            if (!IsSessionActive(userId, out string errorMsgIn))
             {
                 userIsInactive = true;
                 errorMsgOut = errorMsgIn;
@@ -679,7 +714,7 @@ namespace Controllers
             }
             else
             {
-                if(webAPI.AddBook(userId, title, author, price, amount))
+                if (webAPI.AddBook(userId, title, author, price, amount))
                 {
                     return true;
                 }
@@ -697,8 +732,8 @@ namespace Controllers
             userIsInactive = false;
             errorMsgOut = "";
 
-            
-            if(!IsSessionActive(userId, out string errorMsgIn))
+
+            if (!IsSessionActive(userId, out string errorMsgIn))
             {
                 userIsInactive = true;
                 errorMsgOut = errorMsgIn;
@@ -708,14 +743,14 @@ namespace Controllers
             {
                 string categories = "ID CATEGORY\n";
                 var list = webAPI.GetCategories();
-                if(list != null)
+                if (list != null)
                 {
                     foreach (BookCategory s in list)
                     {
-                        
+
                         categories += s.Id + ". " + s.Category + "\n";
-                        
-                    } 
+
+                    }
                     return categories;
                 }
                 else
@@ -726,7 +761,7 @@ namespace Controllers
                 }
             }
         }
-        
+
         /// <summary>
         /// Converting int? to int.
         /// </summary>
@@ -756,7 +791,7 @@ namespace Controllers
             userIsInactive = false;
             errorMsgOut = "";
 
-            if(!IsSessionActive(userId, out string errorMsgIn))
+            if (!IsSessionActive(userId, out string errorMsgIn))
             {
                 userIsInactive = true;
                 errorMsgOut = errorMsgIn;
@@ -766,12 +801,12 @@ namespace Controllers
             {
                 string results = "Results below\n";
                 var list = webAPI.GetAvailableBooks(userInput);
-                if(list != null)
+                if (list != null)
                 {
                     foreach (Book b in list)
                     {
-                        results += $"Id: {b.Id}, Title: {b.Title}, Author: {b.Author}, Amount avaible: {b.Amount}\n";                                            
-                    } 
+                        results += $"Id: {b.Id}, Title: {b.Title}, Author: {b.Author}, Amount avaible: {b.Amount}\n";
+                    }
                     return results;
                 }
                 else
@@ -788,16 +823,16 @@ namespace Controllers
             userIsInactive = false;
             errorMsgOut = "";
 
-            if(!IsSessionActive(userId, out string errorMsgIn))
+            if (!IsSessionActive(userId, out string errorMsgIn))
             {
                 userIsInactive = true;
                 errorMsgOut = errorMsgIn;
                 return false;
             }
             else
-            {   
+            {
                 //Returns False if amount of book is 0. A public int GetAmount(int bookId){} of WebbShopAPI should be implemented.
-                if(webAPI.BuyBook(userId, userInput))
+                if (webAPI.BuyBook(userId, userInput))
                 {
                     return true;
                 }
@@ -815,7 +850,7 @@ namespace Controllers
             userIsInactive = false;
             errorMsgOut = "";
 
-            if(!IsSessionActive(userId, out string errorMsgIn))
+            if (!IsSessionActive(userId, out string errorMsgIn))
             {
                 userIsInactive = true;
                 errorMsgOut = errorMsgIn;
@@ -825,12 +860,12 @@ namespace Controllers
             {
                 string results = "Results below\n";
                 var list = webAPI.GetAuthors(userInput);
-                if(list != null)
+                if (list != null)
                 {
-                    foreach(Book b in list)
+                    foreach (Book b in list)
                     {
-                        results += $"ID: {b.Id}. Title: {b.Title}\n";  
-                    }                    
+                        results += $"ID: {b.Id}. Title: {b.Title}\n";
+                    }
                     return results;
                 }
                 else
@@ -847,7 +882,7 @@ namespace Controllers
             userIsInactive = false;
             errorMsgOut = "";
 
-            if(!IsSessionActive(userId, out string errorMsgIn))
+            if (!IsSessionActive(userId, out string errorMsgIn))
             {
                 userIsInactive = true;
                 errorMsgOut = errorMsgIn;
@@ -857,12 +892,12 @@ namespace Controllers
             {
                 string results = "Results below\n";
                 var list = webAPI.GetBooks(userInput);
-                if(list != null)
+                if (list != null)
                 {
-                    foreach(Book b in list)
+                    foreach (Book b in list)
                     {
-                        results += $"ID: {b.Id}. Title: {b.Title}\n";  
-                    }                    
+                        results += $"ID: {b.Id}. Title: {b.Title}\n";
+                    }
                     return results;
                 }
                 else
@@ -879,7 +914,7 @@ namespace Controllers
             userIsInactive = false;
             errorMsgOut = "";
 
-            if(!IsSessionActive(userId, out string errorMsgIn))
+            if (!IsSessionActive(userId, out string errorMsgIn))
             {
                 userIsInactive = true;
                 errorMsgOut = errorMsgIn;
@@ -889,11 +924,11 @@ namespace Controllers
             {
                 string results = "Results below\n";
                 var book = webAPI.GetBook(userInput);
-                if(book != null)
+                if (book != null)
                 {
-                    if(book.Category != null)
+                    if (book.Category != null)
                     {
-                        results += $"Title: {book.Title}\nAuthor: {book.Author}\nPrice: {book.Price}\nAmount in stock: {book.Amount}\nCategory: {book.Category.Category}\n";                                          
+                        results += $"Title: {book.Title}\nAuthor: {book.Author}\nPrice: {book.Price}\nAmount in stock: {book.Amount}\nCategory: {book.Category.Category}\n";
                         return results;
                     }
                     else
@@ -916,7 +951,7 @@ namespace Controllers
             userIsInactive = false;
             errorMsgOut = "";
 
-            if(!IsSessionActive(userId, out string errorMsgIn))
+            if (!IsSessionActive(userId, out string errorMsgIn))
             {
                 userIsInactive = true;
                 errorMsgOut = errorMsgIn;
@@ -926,14 +961,14 @@ namespace Controllers
             {
                 string results = "Results below\n";
                 var list = webAPI.GetAllBooks();
-                if(list != null)
+                if (list != null)
                 {
                     foreach (Book b in list)
                     {
                         // results += $"Title:{b.Title}\nAuthor: {b.Author}\nPrice: {b.Price}\nAmount in stock: {b.Amount}\nCategory: {b.Category.Category}\n\n";  
 
-                        results += $"ID: {b.Id}. Title: {b.Title}\n";                  
-                    } 
+                        results += $"ID: {b.Id}. Title: {b.Title}\n";
+                    }
                     return results;
                 }
                 else
@@ -943,6 +978,7 @@ namespace Controllers
                     return "";
                 }
             }
-        }      
+        }
     }
+#endregion
 }
