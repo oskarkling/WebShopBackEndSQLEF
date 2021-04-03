@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "gpV/ZhQ4aRZiciFl+uwuoFj18ad2m/v01nlU6FJsYuwhvFtjZynDNYbcJwZithnwH33vN18z5bA/NFST/4QKEg==",
+  "dgSpecHash": "l7R2BYw2a2FIyEWiAFmPqmA0Pb693bNqwiQ+JcUsIwHsPERGe2Ys6eaI8fS6mBCdUuoluIO7DN4LpaYW9HtIuQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\oskar\\sourcevscode\\WebShopBackEndSQLEF\\Inlamningsuppgift2WebbShopAPI\\Inlamningsuppgift2WebbShopAPI.csproj",
+  "projectFilePath": "C:\\Users\\oskar\\Desktop\\SUP\\WebShopBackEndSQLEF\\Inlamningsuppgift2WebbShopAPI\\Inlamningsuppgift2WebbShopAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\oskar\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\oskar\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",

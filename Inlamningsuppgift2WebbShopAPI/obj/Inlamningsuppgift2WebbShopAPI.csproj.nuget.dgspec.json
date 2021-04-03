@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\oskar\\sourcevscode\\WebShopBackEndSQLEF\\Inlamningsuppgift2WebbShopAPI\\Inlamningsuppgift2WebbShopAPI.csproj": {}
+    "C:\\Users\\oskar\\Desktop\\SUP\\WebShopBackEndSQLEF\\Inlamningsuppgift2WebbShopAPI\\Inlamningsuppgift2WebbShopAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\oskar\\sourcevscode\\WebShopBackEndSQLEF\\Inlamningsuppgift2WebbShopAPI\\Inlamningsuppgift2WebbShopAPI.csproj": {
+    "C:\\Users\\oskar\\Desktop\\SUP\\WebShopBackEndSQLEF\\Inlamningsuppgift2WebbShopAPI\\Inlamningsuppgift2WebbShopAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\oskar\\sourcevscode\\WebShopBackEndSQLEF\\Inlamningsuppgift2WebbShopAPI\\Inlamningsuppgift2WebbShopAPI.csproj",
+        "projectUniqueName": "C:\\Users\\oskar\\Desktop\\SUP\\WebShopBackEndSQLEF\\Inlamningsuppgift2WebbShopAPI\\Inlamningsuppgift2WebbShopAPI.csproj",
         "projectName": "Inlamningsuppgift2WebbShopAPI",
-        "projectPath": "C:\\Users\\oskar\\sourcevscode\\WebShopBackEndSQLEF\\Inlamningsuppgift2WebbShopAPI\\Inlamningsuppgift2WebbShopAPI.csproj",
+        "projectPath": "C:\\Users\\oskar\\Desktop\\SUP\\WebShopBackEndSQLEF\\Inlamningsuppgift2WebbShopAPI\\Inlamningsuppgift2WebbShopAPI.csproj",
         "packagesPath": "C:\\Users\\oskar\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\oskar\\sourcevscode\\WebShopBackEndSQLEF\\Inlamningsuppgift2WebbShopAPI\\obj\\",
+        "outputPath": "C:\\Users\\oskar\\Desktop\\SUP\\WebShopBackEndSQLEF\\Inlamningsuppgift2WebbShopAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

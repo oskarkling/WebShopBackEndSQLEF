@@ -7,6 +7,7 @@ namespace ConsoleMVC
     {
         static void Main(string[] args)
         {
+            //Initializes the program
             CoreController coreLogic = new CoreController();
             coreLogic.Start();
         }
