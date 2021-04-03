@@ -10,20 +10,21 @@ using System.Collections.Generic;
 
 namespace Controllers
 {
-    internal class CoreController 
+    internal class CoreController
     {
         //TODO Refactor methods to user GetIntInput() methods ?
         DataController dataController;
         MenuController menuController;
         CurrentUserDetails currentUser;
 
+#region Internal Methods
         /// <summary>
         /// Constructor initializes important objects, vital for running the program.
         /// </summary>
         internal CoreController()
         {
             dataController = new DataController();
-            menuController = new MenuController();       
+            menuController = new MenuController();
         }
 
         /// <summary>
@@ -37,35 +38,37 @@ namespace Controllers
             menuController.Welcome();
             MainLoop();
         }
+#endregion
 
+#region Private Methods
         /// <summary>
         /// Main loop for the program. If this one ends , the program will exit.
         /// </summary>
         private void MainLoop()
         {
-            while(true)
+            while (true)
             {
-                if(LoginUser())
+                if (LoginUser())
                 {
-                    
+
                     //User is now logged in
-                    if(currentUser.IsUserAdmin)
+                    if (currentUser.IsUserAdmin)
                     {
                         // Admin Menu 
-                        AdminMenu();                            
+                        AdminMenu();
                     }
-                    else 
+                    else
                     {
                         // User Menu
                         UserMenu();
-                    }        
+                    }
                 }
                 else
                 {
-                    if(!menuController.TryAgain())
+                    if (!menuController.TryAgain())
                     {
                         break;
-                    }                   
+                    }
                 }
             }
 
@@ -77,11 +80,11 @@ namespace Controllers
         /// </summary>
         private void AdminMenu()
         {
-            while(currentUser.IsUserActive)
+            while (currentUser.IsUserActive)
             {
-                if(menuController.AdminMenu(out int menuChoice, out bool userWantToExit, out string errorMsg))
+                if (menuController.AdminMenu(out int menuChoice, out bool userWantToExit, out string errorMsg))
                 {
-                    switch(menuChoice)
+                    switch (menuChoice)
                     {
                         case 1:
                             // 1. Add a book
@@ -160,20 +163,20 @@ namespace Controllers
                             UserMenu();
                             break;
                         default:
-                            break; 
+                            break;
                     }
                 }
                 else
                 {
-                    if(userWantToExit) 
-                    { 
+                    if (userWantToExit)
+                    {
                         LogOutAndExit();
                     }
                     menuController.PrintMsg(errorMsg);
                 }
             }
         }
-        
+
         /// <summary>
         /// Prints users to console.
         /// Then gets user input by of which user to set session to deactivate. Then writes to database, then prints results to console.
@@ -182,9 +185,9 @@ namespace Controllers
         {
             ListAllUsers();
             int setDeActivateUserId = GetIntInput("Enter id on which user you want to set session to active");
-            if(dataController.SetUserInactive(currentUser.UserId, setDeActivateUserId, out bool userIsInactive, out string errorMsg))
+            if (dataController.SetUserInactive(currentUser.UserId, setDeActivateUserId, out bool userIsInactive, out string errorMsg))
             {
-                if(userIsInactive)
+                if (userIsInactive)
                 {
                     currentUser.IsUserActive = false;
                     return;
@@ -206,9 +209,9 @@ namespace Controllers
         {
             ListAllUsers();
             int setActiveUserId = GetIntInput("Enter id on which user you want to set session to active");
-            if(dataController.SetUserActive(currentUser.UserId, setActiveUserId, out bool userIsInactive, out string errorMsg))
+            if (dataController.SetUserActive(currentUser.UserId, setActiveUserId, out bool userIsInactive, out string errorMsg))
             {
-                if(userIsInactive)
+                if (userIsInactive)
                 {
                     currentUser.IsUserActive = false;
                     return;
@@ -230,9 +233,9 @@ namespace Controllers
         {
             ListAllUsers();
             int demoteUserId = GetIntInput("Enter id on which user you want to demote admin");
-            if(dataController.DemoteAUser(currentUser.UserId, demoteUserId, out bool userIsInactive, out string errorMsg))
+            if (dataController.DemoteAUser(currentUser.UserId, demoteUserId, out bool userIsInactive, out string errorMsg))
             {
-                if(userIsInactive)
+                if (userIsInactive)
                 {
                     currentUser.IsUserActive = false;
                     return;
@@ -245,7 +248,7 @@ namespace Controllers
                 menuController.PrintMsg(errorMsg);
             }
         }
-        
+
         /// <summary>
         /// Prints users to console.
         /// Then gets userinput wich user to promote to admin. Then write that to database. Then prints results to console.
@@ -254,9 +257,9 @@ namespace Controllers
         {
             ListAllUsers();
             int promoteUserId = GetIntInput("Enter id on which user you want to Promote admin");
-            if(dataController.PromoteUser(currentUser.UserId, promoteUserId, out bool userIsInactive, out string errorMsg))
+            if (dataController.PromoteUser(currentUser.UserId, promoteUserId, out bool userIsInactive, out string errorMsg))
             {
-                if(userIsInactive)
+                if (userIsInactive)
                 {
                     currentUser.IsUserActive = false;
                     return;
@@ -276,7 +279,7 @@ namespace Controllers
         private void ShowBestCustomer()
         {
             string bestCustomer = dataController.GetBestCustomer(currentUser.UserId, out bool userIsInactive, out string errorMsg);
-            if(userIsInactive)
+            if (userIsInactive)
             {
                 currentUser.IsUserActive = true;
                 return;
@@ -293,7 +296,7 @@ namespace Controllers
         private void ShowMoneyEarned()
         {
             string moneyEarned = dataController.GetMoneyEarned(currentUser.UserId, out bool userIsInactive, out string errorMsg);
-            if(userIsInactive)
+            if (userIsInactive)
             {
                 currentUser.IsUserActive = true;
                 return;
@@ -304,14 +307,13 @@ namespace Controllers
             }
         }
 
-
         /// <summary>
         /// Prints sold items to the console from the database.(sold books)
         /// </summary>
         private void ShowSoldItems()
         {
             string soldItems = dataController.GetSoldItems(currentUser.UserId, out bool userIsInactive, out string errorMsg);
-            if(userIsInactive)
+            if (userIsInactive)
             {
                 currentUser.IsUserActive = true;
                 return;
@@ -330,13 +332,13 @@ namespace Controllers
             string userName = GetStringInput("Enter username for the new user");
             string password = GetStringInput("Enter password for the new user");
 
-            if(dataController.AddUser(currentUser.UserId, userName, password, out bool userIsInactive, out string errorMsg))
+            if (dataController.AddUser(currentUser.UserId, userName, password, out bool userIsInactive, out string errorMsg))
             {
                 menuController.PrintMsg("Successfully added user");
             }
             else
             {
-                if(userIsInactive)
+                if (userIsInactive)
                 {
                     currentUser.IsUserActive = false;
                     return;
@@ -352,13 +354,13 @@ namespace Controllers
         {
             GetCategories();
             int catId = GetIntInput("Enter the id of the category you want to delete");
-            if(dataController.DeleteCategor(currentUser.UserId, catId, out bool userIsInactive, out string errorMsg))
+            if (dataController.DeleteCategor(currentUser.UserId, catId, out bool userIsInactive, out string errorMsg))
             {
                 menuController.PrintMsg("Successfully deleted category");
             }
             else
             {
-                if(userIsInactive)
+                if (userIsInactive)
                 {
                     currentUser.IsUserActive = false;
                     return;
@@ -376,18 +378,18 @@ namespace Controllers
             int catId = GetIntInput("Enter id of the category you want to update");
             string catName = GetStringInput("Now enter the new name for the category");
 
-            if(dataController.UpdateCategory(currentUser.UserId, catId, catName, out bool userIsInactive, out string errorMsg))
+            if (dataController.UpdateCategory(currentUser.UserId, catId, catName, out bool userIsInactive, out string errorMsg))
             {
                 menuController.PrintMsg("Sucessfully updated category");
             }
             else
             {
-                if(userIsInactive)
+                if (userIsInactive)
                 {
                     currentUser.IsUserActive = false;
                     return;
                 }
-                menuController.PrintMsg(errorMsg);          
+                menuController.PrintMsg(errorMsg);
             }
         }
 
@@ -402,18 +404,18 @@ namespace Controllers
             GetCategories();
             int catId = GetIntInput("Enter id of the category you want to add the book to");
 
-            if(dataController.AddBookToCategory(currentUser.UserId, bookId, catId, out bool userIsInactive, out string errorMsg))
+            if (dataController.AddBookToCategory(currentUser.UserId, bookId, catId, out bool userIsInactive, out string errorMsg))
             {
                 menuController.PrintMsg("Sucessfully added book to category");
             }
             else
             {
-                if(userIsInactive)
+                if (userIsInactive)
                 {
                     currentUser.IsUserActive = false;
                     return;
                 }
-                menuController.PrintMsg(errorMsg);                
+                menuController.PrintMsg(errorMsg);
             }
 
         }
@@ -425,13 +427,13 @@ namespace Controllers
         private void AddCategory()
         {
             string catName = GetStringInput("Enter the name of the category you want to add");
-            if(dataController.AddCategory(currentUser.UserId, catName, out bool userIsInactive, out string errorMsg))
+            if (dataController.AddCategory(currentUser.UserId, catName, out bool userIsInactive, out string errorMsg))
             {
                 menuController.PrintMsg($"Successfully added {catName} as category name");
             }
             else
             {
-                if(userIsInactive)
+                if (userIsInactive)
                 {
                     currentUser.IsUserActive = false;
                     return;
@@ -448,13 +450,13 @@ namespace Controllers
         {
             GetAllBooks();
             int bookId = GetIntInput("Enter the ID of the book you want to delete");
-            if(dataController.DeleteBook(currentUser.UserId, bookId, out bool userIsInactive, out string errorMsg))
+            if (dataController.DeleteBook(currentUser.UserId, bookId, out bool userIsInactive, out string errorMsg))
             {
                 menuController.PrintMsg("Successfully deleted the book");
             }
             else
             {
-                if(userIsInactive)
+                if (userIsInactive)
                 {
                     currentUser.IsUserActive = false;
                     return;
@@ -477,21 +479,21 @@ namespace Controllers
             string authorName = GetStringInput("Enter new author for the book");
             int price = GetIntInput("Enter new price for the book");
 
-            if(dataController.UpdateBook(currentUser.UserId, bookId, titleName, authorName, price, out bool userIsInactive, out string errorMsg))
+            if (dataController.UpdateBook(currentUser.UserId, bookId, titleName, authorName, price, out bool userIsInactive, out string errorMsg))
             {
                 menuController.PrintMsg("Successfully updated book");
             }
             else
             {
-                if(userIsInactive)
+                if (userIsInactive)
                 {
-                currentUser.IsUserActive = false;
-                return;
+                    currentUser.IsUserActive = false;
+                    return;
                 }
                 menuController.PrintMsg(errorMsg);
             }
         }
-        
+
         /// <summary>
         /// Gets userinput and then retrives data about the user from database and prints then to console
         /// </summary>
@@ -499,14 +501,14 @@ namespace Controllers
         {
             string userName = GetStringInput("Enter the name of the user you want to find");
             string result = dataController.GetUserByNameSearch(currentUser.UserId, userName, out bool userIsInactive, out string errorMsg);
-            if(userIsInactive)
+            if (userIsInactive)
             {
                 currentUser.IsUserActive = false;
                 return;
             }
             else
             {
-                if(errorMsg == string.Empty)
+                if (errorMsg == string.Empty)
                 {
                     menuController.PrintResults(result);
                 }
@@ -524,14 +526,14 @@ namespace Controllers
         private void ListAllUsers()
         {
             string allUsers = dataController.GetAllUsers(currentUser.UserId, out bool userIsInactive, out string errorMsg);
-            if(userIsInactive)
+            if (userIsInactive)
             {
                 currentUser.IsUserActive = false;
                 return;
             }
             else
             {
-                if(errorMsg == string.Empty)
+                if (errorMsg == string.Empty)
                 {
                     menuController.PrintResults(allUsers);
                 }
@@ -552,14 +554,14 @@ namespace Controllers
             int bookId = GetIntInput("Enter Id of which book you want to set amount on");
             int amount = GetIntInput("Enter Amount");
 
-            if(dataController.SetBookAmount(currentUser.UserId, bookId, amount, out bool userIsInactive, out string errorMsg))
+            if (dataController.SetBookAmount(currentUser.UserId, bookId, amount, out bool userIsInactive, out string errorMsg))
             {
                 menuController.PrintMsg("Successfully changed the amount");
             }
             else
             {
-                if(userIsInactive)
-                {                   
+                if (userIsInactive)
+                {
                     currentUser.IsUserActive = false;
                     return;
                 }
@@ -579,15 +581,15 @@ namespace Controllers
             int price = GetIntInput("Enter price for the book");
             int amount = GetIntInput("Enter the amount of this book");
 
-            if(dataController.AddABook(currentUser.UserId, title, author, price, amount, out bool userIsInactive, out string errorMsg))
+            if (dataController.AddABook(currentUser.UserId, title, author, price, amount, out bool userIsInactive, out string errorMsg))
             {
 
                 menuController.PrintMsg("Successfully added a book");
             }
             else
             {
-                if(userIsInactive)
-                {                   
+                if (userIsInactive)
+                {
                     currentUser.IsUserActive = false;
                     return;
                 }
@@ -599,31 +601,38 @@ namespace Controllers
 
         /// <summary>
         /// Calls menuctontroller for input and shows the parameter to the console.
+        /// If input is that user want to exit. It will logout user and exit the program
         /// </summary>
         /// <param name="msg"></param>
         /// <returns></returns>
         private int GetIntInput(string msg)
         {
-            if(menuController.GetSearchIntInput(msg,
+            if (menuController.GetSearchIntInput(msg,
             out int userInput, out bool userWantToExit, out string errorMsg))
             {
                 return userInput;
             }
             else
             {
-                if(errorMsg != "")
+                if (errorMsg != "")
                 {
                     menuController.PrintMsg(errorMsg);
                 }
 
-                if(userWantToExit)
+                if (userWantToExit)
                 {
                     LogOutAndExit();
                 }
             }
-            return 0;           
+            return 0;
         }
-        
+
+        /// <summary>
+        /// Calls menuctontroller for input and shows the parameter to the console
+        /// If input is that user want to exit. It will logout user and exit the program
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <returns></returns>
         private string GetStringInput(string msg)
         {
             if (menuController.GetSearchStringInput(msg,
@@ -651,22 +660,22 @@ namespace Controllers
         /// </summary>
         /// <returns>True if sucessful login, else false</returns>
         private bool LoginUser()
-        {           
+        {
             // LoginDetails loginUserDetails = menuController.LoginMenu();
-            if(menuController.LoginMenu(out LoginDetails loginUserDetails, out bool userWantToLogout, out bool newUser))
+            if (menuController.LoginMenu(out LoginDetails loginUserDetails, out bool userWantToLogout, out bool newUser))
             {
-                
-                if(newUser)
+
+                if (newUser)
                 {
-                    if(dataController.RegisterUser(loginUserDetails, out string registerErrorMsg))
+                    if (dataController.RegisterUser(loginUserDetails, out string registerErrorMsg))
                     {
                         menuController.PrintMsg($"{loginUserDetails.UserName} Registered. Logging in...");
 
-                        if(dataController.LoginUser(loginUserDetails, out int userId, out string loginErrorMsg))
-                        {               
-                            
+                        if (dataController.LoginUser(loginUserDetails, out int userId, out string loginErrorMsg))
+                        {
+
                             SaveCurrentUser(loginUserDetails, userId);
-                            
+
                             menuController.PrintMsg($"Welcome {currentUser.UserName}");
                             return true;
                         }
@@ -684,9 +693,9 @@ namespace Controllers
                 }
                 else
                 {
-                    if(dataController.LoginUser(loginUserDetails, out int userId, out string loginErrorMsg))
-                    {               
-                        
+                    if (dataController.LoginUser(loginUserDetails, out int userId, out string loginErrorMsg))
+                    {
+
                         SaveCurrentUser(loginUserDetails, userId);
                         menuController.ClearConsole();
                         menuController.PrintMsg($"Login sucessful!\nWelcome {currentUser.UserName}");
@@ -703,9 +712,9 @@ namespace Controllers
             {
                 ExitProgram();
                 return false;
-            }      
+            }
         }
-        
+
         /// <summary>
         /// Logs out the user from the database
         /// </summary>
@@ -715,7 +724,7 @@ namespace Controllers
         {
             menuController.PrintMsg($"Logging out {currentUser.UserName}");
             Thread.Sleep(1000);
-            if(dataController.LogOutUser(userId))
+            if (dataController.LogOutUser(userId))
             {
                 return true;
             }
@@ -743,7 +752,7 @@ namespace Controllers
             menuController.PrintMsg("Exiting Program");
             Thread.Sleep(2000);
             menuController.ClearConsole();
-            Environment.Exit(0);      
+            Environment.Exit(0);
         }
 
         /// <summary>
@@ -751,11 +760,11 @@ namespace Controllers
         /// </summary>
         private void UserMenu()
         {
-            while(currentUser.IsUserActive)
+            while (currentUser.IsUserActive)
             {
-                if(menuController.UserMenu(out int menuChoice, out bool userWantToExit, out string errorMsg))
+                if (menuController.UserMenu(out int menuChoice, out bool userWantToExit, out string errorMsg))
                 {
-                    switch(menuChoice)
+                    switch (menuChoice)
                     {
                         case 1:
                             // 1. Show all categories
@@ -791,15 +800,15 @@ namespace Controllers
                             break;
                         case 9:
                             LogOutIfUserIsNotAdmin();
-                            return;                          
+                            return;
                         default:
-                            break; 
+                            break;
                     }
                 }
                 else
                 {
-                    if(userWantToExit) 
-                    { 
+                    if (userWantToExit)
+                    {
                         LogOutAndExit();
                     }
                     menuController.PrintMsg(errorMsg);
@@ -812,7 +821,7 @@ namespace Controllers
         /// </summary>
         private void LogOutIfUserIsNotAdmin()
         {
-            if(!currentUser.IsUserAdmin)
+            if (!currentUser.IsUserAdmin)
             {
                 LogoutUser(currentUser.UserId);
             }
@@ -826,7 +835,7 @@ namespace Controllers
         {
             //No currency implemented yet. Only sets the book amount-- in the database.
             GetAllBooks();
-            if(menuController.GetSearchIntInput("Enter Id of which book you want to buy",
+            if (menuController.GetSearchIntInput("Enter Id of which book you want to buy",
             out int userInput, out bool userWantToExit, out string errorMsg))
             {
                 bool successfulBuy = dataController.UserBuysBook(userInput,
@@ -834,29 +843,29 @@ namespace Controllers
                 out bool userIsInactive,
                 out string errorMsg2);
 
-                if(userIsInactive)
+                if (userIsInactive)
                 {
                     currentUser.IsUserActive = false;
                     return;
                 }
 
-                if(successfulBuy)
+                if (successfulBuy)
                 {
                     menuController.PrintResults("You successfully bought the book");
                 }
                 else
                 {
                     menuController.PrintResults("Could not buy book..");
-                }     
+                }
             }
             else
             {
-                if(errorMsg != "")
+                if (errorMsg != "")
                 {
                     menuController.PrintMsg(errorMsg);
                 }
 
-                if(userWantToExit)
+                if (userWantToExit)
                 {
                     LogOutAndExit();
                 }
@@ -868,16 +877,16 @@ namespace Controllers
         /// </summary>
         private void GetBooksByAuthorNameSearch()
         {
-            if(menuController.GetSearchStringInput("Enter the name of the Author you want to search for and their books will show",
+            if (menuController.GetSearchStringInput("Enter the name of the Author you want to search for and their books will show",
             out string userInput, out bool userWantToExit, out string errorMsg))
             {
-                string results = dataController.GetBooksByAuthorNameSearch(userInput, 
-                currentUser.UserId, 
-                out bool userIsInactive, 
+                string results = dataController.GetBooksByAuthorNameSearch(userInput,
+                currentUser.UserId,
+                out bool userIsInactive,
                 out string errorMsg2);
 
-                if(userIsInactive)
-                {                   
+                if (userIsInactive)
+                {
                     currentUser.IsUserActive = false;
                     return;
                 }
@@ -886,12 +895,12 @@ namespace Controllers
             }
             else
             {
-                if(errorMsg != "")
+                if (errorMsg != "")
                 {
                     menuController.PrintMsg(errorMsg);
                 }
 
-                if(userWantToExit)
+                if (userWantToExit)
                 {
                     LogOutAndExit();
                 }
@@ -903,16 +912,16 @@ namespace Controllers
         /// </summary>
         private void GetBookBySearchName()
         {
-            if(menuController.GetSearchStringInput("Enter Title or author of book you want to search for",
+            if (menuController.GetSearchStringInput("Enter Title or author of book you want to search for",
             out string userInput, out bool userWantToExit, out string errorMsg))
             {
-                string results = dataController.GetBookByName(userInput, 
-                currentUser.UserId, 
-                out bool userIsInactive, 
+                string results = dataController.GetBookByName(userInput,
+                currentUser.UserId,
+                out bool userIsInactive,
                 out string errorMsg2);
 
-                if(userIsInactive)
-                {                   
+                if (userIsInactive)
+                {
                     currentUser.IsUserActive = false;
                     return;
                 }
@@ -921,16 +930,16 @@ namespace Controllers
             }
             else
             {
-                if(errorMsg != "")
+                if (errorMsg != "")
                 {
                     menuController.PrintMsg(errorMsg);
                 }
 
-                if(userWantToExit)
+                if (userWantToExit)
                 {
                     LogOutAndExit();
                 }
-            }      
+            }
         }
 
         /// <summary>
@@ -940,7 +949,7 @@ namespace Controllers
         private void GetInfoOfBookById()
         {
             GetAllBooks();
-            if(menuController.GetSearchIntInput("Enter Id of the book you want information about",
+            if (menuController.GetSearchIntInput("Enter Id of the book you want information about",
             out int userInput, out bool userWantToExit, out string errorMsg))
             {
                 string results = dataController.GetInfoOfBookById(userInput,
@@ -948,7 +957,7 @@ namespace Controllers
                 out bool userIsInactive,
                 out string errorMsg2);
 
-                if(userIsInactive)
+                if (userIsInactive)
                 {
                     currentUser.IsUserActive = false;
                     return;
@@ -958,16 +967,16 @@ namespace Controllers
             }
             else
             {
-                if(errorMsg != "")
+                if (errorMsg != "")
                 {
                     menuController.PrintMsg(errorMsg);
                 }
 
-                if(userWantToExit)
+                if (userWantToExit)
                 {
                     LogOutAndExit();
                 }
-            }           
+            }
         }
 
         /// <summary>
@@ -976,7 +985,7 @@ namespace Controllers
         private void GetAllBooks()
         {
             string results = dataController.GetAllBooks(currentUser.UserId, out bool userIsInactive, out string errorMsg2);
-            if(userIsInactive)
+            if (userIsInactive)
             {
                 currentUser.IsUserActive = false;
                 return;
@@ -993,7 +1002,7 @@ namespace Controllers
         private void GetAvailableBooksInCatById()
         {
             GetCategories();
-            if(menuController.GetSearchIntInput("Enter Id of the category you want to list all available books from",
+            if (menuController.GetSearchIntInput("Enter Id of the category you want to list all available books from",
             out int userInput, out bool userWantToExit, out string errorMsg))
             {
                 string results = dataController.GetBooksAvailableByCategoryId(userInput,
@@ -1001,7 +1010,7 @@ namespace Controllers
                 out bool userIsInactive,
                 out string errorMsg2);
 
-                if(userIsInactive)
+                if (userIsInactive)
                 {
                     currentUser.IsUserActive = false;
                     return;
@@ -1011,16 +1020,16 @@ namespace Controllers
             }
             else
             {
-                if(errorMsg != "")
+                if (errorMsg != "")
                 {
                     menuController.PrintMsg(errorMsg);
                 }
 
-                if(userWantToExit)
+                if (userWantToExit)
                 {
                     LogOutAndExit();
                 }
-            }           
+            }
         }
 
         /// <summary>
@@ -1030,7 +1039,7 @@ namespace Controllers
         private void GetBooksInCategoryById()
         {
             GetCategories();
-            if(menuController.GetSearchIntInput("Enter Id of the category you want to list all books from",
+            if (menuController.GetSearchIntInput("Enter Id of the category you want to list all books from",
             out int userInput, out bool userWantToExit, out string errorMsg))
             {
                 string results = dataController.GetBooksByCategoryId(userInput,
@@ -1038,7 +1047,7 @@ namespace Controllers
                 out bool userIsInactive,
                 out string errorMsg2);
 
-                if(userIsInactive)
+                if (userIsInactive)
                 {
                     //No need for local Logout User method call here. Since WebbShopAPI Ping method already logs user out if user is not active
                     currentUser.IsUserActive = false;
@@ -1049,16 +1058,16 @@ namespace Controllers
             }
             else
             {
-                if(errorMsg != "")
+                if (errorMsg != "")
                 {
                     menuController.PrintMsg(errorMsg);
                 }
 
-                if(userWantToExit)
+                if (userWantToExit)
                 {
                     LogOutAndExit();
                 }
-            }           
+            }
         }
 
         /// <summary>
@@ -1066,16 +1075,16 @@ namespace Controllers
         /// </summary>
         private void GetSpecificCategory()
         {
-            if(menuController.GetSearchStringInput("Enter name of category to search for",
+            if (menuController.GetSearchStringInput("Enter name of category to search for",
             out string userInput, out bool userWantToExit, out string errorMsg))
             {
-                string results = dataController.GetSpecificCategory(userInput, 
-                currentUser.UserId, 
-                out bool userIsInactive, 
+                string results = dataController.GetSpecificCategory(userInput,
+                currentUser.UserId,
+                out bool userIsInactive,
                 out string errorMsg2);
 
-                if(userIsInactive)
-                {                   
+                if (userIsInactive)
+                {
                     currentUser.IsUserActive = false;
                     return;
                 }
@@ -1084,12 +1093,12 @@ namespace Controllers
             }
             else
             {
-                if(errorMsg != "")
+                if (errorMsg != "")
                 {
                     menuController.PrintMsg(errorMsg);
                 }
 
-                if(userWantToExit)
+                if (userWantToExit)
                 {
                     LogOutAndExit();
                 }
@@ -1099,10 +1108,10 @@ namespace Controllers
         /// <summary>
         /// Gets and Prints all categories from database to the console
         /// </summary>
-        private void GetCategories() 
+        private void GetCategories()
         {
             string categories = dataController.GetCategories(currentUser.UserId, out bool userIsInactive, out string errorMsg2);
-            if(userIsInactive)
+            if (userIsInactive)
             {
                 currentUser.IsUserActive = false;
                 return;
@@ -1120,7 +1129,8 @@ namespace Controllers
         private void LogOutAndExit()
         {
             LogoutUser(currentUser.UserId);
-            ExitProgram();                  
+            ExitProgram();
         }
     }
+#endregion
 }
