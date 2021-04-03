@@ -1,6 +1,3 @@
-using System;
-using System.Diagnostics;
-
 namespace Pages
 {
     internal enum PageType
@@ -12,5 +9,4 @@ namespace Pages
         Data,
         Welcome,
     }
-    
 }

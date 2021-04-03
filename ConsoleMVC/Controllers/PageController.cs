@@ -1,14 +1,14 @@
-using System;
-using System.Diagnostics;
-using System.Collections.Generic;
 using Pages;
+using System.Collections.Generic;
 
 namespace Controllers
 {
     internal class PageController
     {
-        List<Page> pages;
-#region Internal methods
+        private List<Page> pages;
+
+        #region Internal methods
+
         internal PageController()
         {
             SetupPages();
@@ -22,9 +22,9 @@ namespace Controllers
         internal Page GetPage(PageType type)
         {
             Page pageToSend = null;
-            foreach(Page p in pages) 
+            foreach (Page p in pages)
             {
-                if(p.Type == type)
+                if (p.Type == type)
                 {
                     pageToSend = p;
                 }
@@ -38,20 +38,20 @@ namespace Controllers
         /// </summary>
         private void SetupPages()
         {
-            pages = new List<Page>() 
+            pages = new List<Page>()
             {
                 new Page
                 {
                     Type = PageType.None,
                     Message = $@"This is pagetype none. No msg will show"
                 },
-                new Page 
-                {                  
+                new Page
+                {
                     Type = PageType.LoginMenu,
                     Message =@"---Login Menu---
 1. Login
 2. Register",
-                    NrOfMenuOptions = 2                 
+                    NrOfMenuOptions = 2
                 },
                 new Page
                 {
@@ -65,7 +65,7 @@ namespace Controllers
 6. Search for books by name
 7. Search for Authors name to get their written books
 8. Buy a book.
-9. Exit user Menu", 
+9. Exit user Menu",
                     NrOfMenuOptions = 9,
                 },
                 new Page
@@ -108,41 +108,38 @@ namespace Controllers
  / .,*.,  . *,. ..  #(  ,  .//.  .%,(  /#  .........* /.   .. (  .....(,(   ...,
  * .,/.,   .* . .. ./*  ,  .(*.  .%,,  **  ....  .. ( /.   .. #  .,.../,*   . .,
  * .,*.*   .*.( ..  *(  ,  ./*.  .%,,  ,*   ...  ..., *.   .  /  .. ../,*   .  .
- * .,/.,   .(..  .  ,/  ,   /*   ./.,  ,%  ,,... ..,, /.   .  /  .. ../*/   .   
- ( ../ ,   .*..    .*(  ,  .**   ,,,,  ,&  .,...  . , *.   .  /  .. ../**    .  
- , .,/.,   .*.*  .  /*  .   /%    .,*  .,   .. .    , *.      /  .. . /,*    .  
- * ..*./   .*.*    .#/  .  .*,.  . .*  ..  ,..     ., *.   .  /  .. . /**       
- ,  ./.*   ./.     ,(,  .  ./*   . .*  .   ,.  .    ( /*      /  .... /./       
- # . *,*   .*       (,  ,  ,/(.  . .*       .       . *,   .  /  ,..  (./       
- / . /.,   .(      .#*  .   /(.    ,,  .   ,.      .. /   ..  /  ...  *./    .  
- (   , ,    (.      **     .(,.    ./       .  .    . #    .  /   ..  /(#       
- ,   ( .    *       ,(     .#,.    ..  .    .. .    . *    .  #   .   *,%       
-     (      . .     ./     .%,.    ,.      ... .   ., (   ..  ,   .   *(/       
-     *        .      /     .#,     ,.       ..      . *       .   .   %/.       
-     (        .      %     .*,     .        ..        (           .   */        
-     *        (      /      (,              ,.      . /           ..  %(        
-     *        (      *     .*.     .        .      .. ,           ..  (,        
-     %        *      #     .,,              .       . .           .   *.        
-     *        .      .     ..,              .       .             .   .         
-     /               .                              .             .   .     
-     
-     
-     
-     
-      ___       __   __         ___     
-|  | |__  |    /  ` /  \  |\/| |__      
-|/\| |___ |___ \__, \__/  |  | |___    
-___  __     ___       ___   
- |  /  \     |  |__| |__   
- |  \__/     |  |  | |___   
-___       ___     __   __   __           __        __   __                                                                                       
+ * .,/.,   .(..  .  ,/  ,   /*   ./.,  ,%  ,,... ..,, /.   .  /  .. ../*/   .
+ ( ../ ,   .*..    .*(  ,  .**   ,,,,  ,&  .,...  . , *.   .  /  .. ../**    .
+ , .,/.,   .*.*  .  /*  .   /%    .,*  .,   .. .    , *.      /  .. . /,*    .
+ * ..*./   .*.*    .#/  .  .*,.  . .*  ..  ,..     ., *.   .  /  .. . /**
+ ,  ./.*   ./.     ,(,  .  ./*   . .*  .   ,.  .    ( /*      /  .... /./
+ # . *,*   .*       (,  ,  ,/(.  . .*       .       . *,   .  /  ,..  (./
+ / . /.,   .(      .#*  .   /(.    ,,  .   ,.      .. /   ..  /  ...  *./    .
+ (   , ,    (.      **     .(,.    ./       .  .    . #    .  /   ..  /(#
+ ,   ( .    *       ,(     .#,.    ..  .    .. .    . *    .  #   .   *,%
+     (      . .     ./     .%,.    ,.      ... .   ., (   ..  ,   .   *(/
+     *        .      /     .#,     ,.       ..      . *       .   .   %/.
+     (        .      %     .*,     .        ..        (           .   */
+     *        (      /      (,              ,.      . /           ..  %(
+     *        (      *     .*.     .        .      .. ,           ..  (,
+     %        *      #     .,,              .       . .           .   *.
+     *        .      .     ..,              .       .             .   .
+     /               .                              .             .   .
+
+      ___       __   __         ___
+|  | |__  |    /  ` /  \  |\/| |__
+|/\| |___ |___ \__, \__/  |  | |___
+___  __     ___       ___
+ |  /  \     |  |__| |__
+ |  \__/     |  |  | |___
+___       ___     __   __   __           __        __   __
  |  |__| |__     |__) /  \ /  \ |__/    /__` |__| /  \ |__)
- |  |  | |___    |__) \__/ \__/ |  \    .__/ |  | \__/ |   
+ |  |  | |___    |__) \__/ \__/ |  \    .__/ |  | \__/ |
 "
                 }
-
-            };                      
+            };
         }
-#endregion
+
+        #endregion Internal methods
     }
 }

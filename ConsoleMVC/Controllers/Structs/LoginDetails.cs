@@ -1,5 +1,3 @@
-using System;
-
 namespace Structs
 {
     internal struct LoginDetails

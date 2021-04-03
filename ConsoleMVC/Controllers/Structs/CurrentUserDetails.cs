@@ -1,5 +1,3 @@
-using System;
-
 namespace Structs
 {
     internal struct CurrentUserDetails
@@ -7,9 +5,8 @@ namespace Structs
         internal string UserName { get; set; }
         internal string Password { get; set; }
         internal int UserId { get; set; }
-        internal bool IsUserAdmin {get; set; }
+        internal bool IsUserAdmin { get; set; }
         internal bool IsUserActive { get; set; }
-
 
         internal CurrentUserDetails(string userName, string password, int userId, bool isUserAdmin, bool isUserActive)
         {
