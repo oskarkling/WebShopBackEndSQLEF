@@ -223,6 +223,15 @@ namespace Controllers
 
         }
 
+        /// <summary>
+        /// Logs in the user(parameter setactiveuserid) in the database.
+        /// Also checks if the user's session is active. Then also returns out bool if user is inactve, and string error message
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="setActiveUserId"></param>
+        /// <param name="userIsInactive"></param>
+        /// <param name="errorMsg"></param>
+        /// <returns></returns>
         internal bool SetUserActive(int userId, int setActiveUserId, out bool userIsInactive, out string errorMsg)
         {
             userIsInactive = false;
@@ -249,6 +258,15 @@ namespace Controllers
             }
         }
 
+        /// <summary>
+        /// Sets the user in active. Logs the user out.
+        /// Also checks if the user's session is active. Then also returns out bool if user is inactve, and string error message
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="setDeActivateUserId"></param>
+        /// <param name="userIsInactive"></param>
+        /// <param name="errorMsg"></param>
+        /// <returns>True if successfull, else false</returns>
         internal bool SetUserInactive(int userId, int setDeActivateUserId, out bool userIsInactive, out string errorMsg)
         {
             userIsInactive = false;
@@ -275,6 +293,15 @@ namespace Controllers
             }
         }
 
+        /// <summary>
+        /// Demotes a user from admin in the database.
+        /// Also checks if the user's session is active. Then also returns out bool if user is inactve, and string error message
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="demoteUserId"></param>
+        /// <param name="userIsInactive"></param>
+        /// <param name="errorMsg"></param>
+        /// <returns>True if successfull, else false</returns>
         internal bool DemoteAUser(int userId, int demoteUserId, out bool userIsInactive, out string errorMsg)
         {
             userIsInactive = false;
@@ -301,6 +328,15 @@ namespace Controllers
             }
         }
 
+        /// <summary>
+        /// Promotes a user to admin in the database
+        /// Also checks if the user's session is active. Then also returns out bool if user is inactve, and string error message
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="promoteUserId"></param>
+        /// <param name="userIsInactive"></param>
+        /// <param name="errorMsg"></param>
+        /// <returns>True if successfull, else false</returns>
         internal bool PromoteUser(int userId, int promoteUserId, out bool userIsInactive, out string errorMsg)
         {
             userIsInactive = false;
@@ -327,6 +363,14 @@ namespace Controllers
             }
         }
 
+        /// <summary>
+        /// Returns a string of a users name which is the best customer. Has most sold books to his name.
+        /// Also checks if the user's session is active. Then also returns out bool if user is inactve, and string error message.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="userIsInactive"></param>
+        /// <param name="errorMsg"></param>
+        /// <returns>A string of the results</returns>
         internal string GetBestCustomer(int userId, out bool userIsInactive, out string errorMsg)
         {
             userIsInactive = false;
@@ -356,6 +400,14 @@ namespace Controllers
             }
         }
 
+        /// <summary>
+        /// Returns money earned from total sold books from the database.
+        /// Also checks if the user's session is active. Then also returns out bool if user is inactve, and string error message
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="userIsInactive"></param>
+        /// <param name="errorMsg"></param>
+        /// <returns>String which contains a number</returns>
         internal string GetMoneyEarned(int userId, out bool userIsInactive, out string errorMsg)
         {
             userIsInactive = false;
@@ -376,6 +428,14 @@ namespace Controllers
             }
         }
 
+        /// <summary>
+        /// Returns all sold books in type of string.
+        /// Also checks if the user's session is active. Then also returns out bool if user is inactve, and string error message
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="userIsInactive"></param>
+        /// <param name="errorMsg"></param>
+        /// <returns>String of the results of sold books</returns>
         internal string GetSoldItems(int userId, out bool userIsInactive, out string errorMsg)
         {
             userIsInactive = false;
@@ -408,6 +468,16 @@ namespace Controllers
             }
         }
 
+        /// <summary>
+        /// Adds a user to the database by input parameters. If adminId is verified.
+        /// Also checks if the user's session is active. Then also returns out bool if user is inactve, and string error message
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="userName"></param>
+        /// <param name="password"></param>
+        /// <param name="userIsInactive"></param>
+        /// <param name="errorMsg"></param>
+        /// <returns>True if successfull, else false</returns>
         internal bool AddUser(int userId, string userName, string password, out bool userIsInactive, out string errorMsg)
         {
             userIsInactive = false;
@@ -442,7 +512,7 @@ namespace Controllers
         /// <param name="catId"></param>
         /// <param name="userIsInactive"></param>
         /// <param name="errorMsg"></param>
-        /// <returns>True if successful, else false. Also returns bool if userisactive and a error message</returns>
+        /// <returns>True if successful, else false</returns>
         internal bool DeleteCategor(int userId, int catId, out bool userIsInactive, out string errorMsg)
         {
             userIsInactive = false;
@@ -469,6 +539,16 @@ namespace Controllers
             }
         }
 
+        /// <summary>
+        /// Updates the name of a category in the database by category id in paramters
+        /// Also checks if the user's session is active. Then also returns out bool if user is inactve, and string error message
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="catId"></param>
+        /// <param name="catName"></param>
+        /// <param name="userIsInactive"></param>
+        /// <param name="errorMsg"></param>
+        /// <returns>True if successfull, else false</returns>
         internal bool UpdateCategory(int userId, int catId, string catName, out bool userIsInactive, out string errorMsg)
         {
             userIsInactive = false;
@@ -495,6 +575,16 @@ namespace Controllers
             }
         }
 
+        /// <summary>
+        /// Adds a category to a book by bookId in paramters. It does this through a link between foreign keys between book model and bookcategores
+        /// Also checks if the user's session is active. Then also returns out bool if user is inactve, and string error message 
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="bookId"></param>
+        /// <param name="catId"></param>
+        /// <param name="userIsInactive"></param>
+        /// <param name="errorMsg"></param>
+        /// <returns>True if successful, else false</returns>
         internal bool AddBookToCategory(int userId, int bookId, int catId, out bool userIsInactive, out string errorMsg)
         {
             userIsInactive = false;
@@ -521,6 +611,15 @@ namespace Controllers
             }
         }
 
+        /// <summary>
+        /// Adds a category to the database by parameter input
+        /// Also checks if the user's session is active. Then also returns out bool if user is inactve, and string error message
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="catName"></param>
+        /// <param name="userIsInactive"></param>
+        /// <param name="errorMsg"></param>
+        /// <returns>True if successfull else false</returns>
         internal bool AddCategory(int userId, string catName, out bool userIsInactive, out string errorMsg)
         {
             userIsInactive = false;
@@ -546,7 +645,16 @@ namespace Controllers
                 }
             }
         }
-
+        
+        /// <summary>
+        /// Deletes a book from the database
+        /// Also checks if the user's session is active. Then also returns out bool if user is inactve, and string error message
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="bookId"></param>
+        /// <param name="userIsInactive"></param>
+        /// <param name="errorMsg"></param>
+        /// <returns>True if successfull, else false</returns>
         internal bool DeleteBook(int userId, int bookId, out bool userIsInactive, out string errorMsg)
         {
             userIsInactive = false;
@@ -573,6 +681,18 @@ namespace Controllers
             }
         }
 
+        /// <summary>
+        /// Updates a book with a new name, author, price from input parameters
+        /// Also checks if the user's session is active. Then also returns out bool if user is inactve, and string error message
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="bookId"></param>
+        /// <param name="titleName"></param>
+        /// <param name="authorName"></param>
+        /// <param name="price"></param>
+        /// <param name="userIsInactive"></param>
+        /// <param name="errorMsgOut"></param>
+        /// <returns>True if successfull, else false</returns>
         internal bool UpdateBook(int userId, int bookId, string titleName, string authorName, int price, out bool userIsInactive, out string errorMsgOut)
         {
             userIsInactive = false;
@@ -599,6 +719,15 @@ namespace Controllers
             }
         }
 
+        /// <summary>
+        /// Returns a string with username, last login and if the user is active in type string.
+        /// Also checks if the user's session is active. Then also returns out bool if user is inactve, and string error message
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="userName"></param>
+        /// <param name="userIsInactive"></param>
+        /// <param name="errorMsgOut"></param>
+        /// <returns>String containing the results</returns>
         internal string GetUserByNameSearch(int userId, string userName, out bool userIsInactive, out string errorMsgOut)
         {
             userIsInactive = false;
@@ -637,6 +766,14 @@ namespace Controllers
             }
         }
 
+        /// <summary>
+        /// Returns a string of all users in the database.
+        /// Also checks if the user's session is active. Then also returns out bool if user is inactve, and string error message
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="userIsInactive"></param>
+        /// <param name="errorMsgOut"></param>
+        /// <returns>String with results</returns>
         internal string GetAllUsers(int userId, out bool userIsInactive, out string errorMsgOut)
         {
             userIsInactive = false;
@@ -675,6 +812,16 @@ namespace Controllers
             }
         }
 
+        /// <summary>
+        /// Sets the amount of a book in the database, provided by bookId and amount in the parameters
+        /// Also checks if the user's session is active. Then also returns out bool if user is inactve, and string error message
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="bookId"></param>
+        /// <param name="amount"></param>
+        /// <param name="userIsInactive"></param>
+        /// <param name="errorMsgOut"></param>
+        /// <returns>True if successsfull, else false</returns>
         internal bool SetBookAmount(int userId, int bookId, int amount, out bool userIsInactive, out string errorMsgOut)
         {
             userIsInactive = false;
@@ -701,6 +848,18 @@ namespace Controllers
             }
         }
 
+        /// <summary>
+        /// Adds a book to the database by parameters input data
+        /// Also checks if the user's session is active. Then also returns out bool if user is inactve, and string error message
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="title"></param>
+        /// <param name="author"></param>
+        /// <param name="price"></param>
+        /// <param name="amount"></param>
+        /// <param name="userIsInactive"></param>
+        /// <param name="errorMsgOut"></param>
+        /// <returns>True if successfull, else false</returns>
         internal bool AddABook(int userId, string title, string author, int price, int amount, out bool userIsInactive, out string errorMsgOut)
         {
             userIsInactive = false;
@@ -727,6 +886,14 @@ namespace Controllers
             }
         }
 
+        /// <summary>
+        /// Gets all categories in form of a string from the database.
+        /// Also checks if the user's session is active. Then also returns out bool if user is inactve, and string error message
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="userIsInactive"></param>
+        /// <param name="errorMsgOut"></param>
+        /// <returns>String with the results</returns>
         internal string GetCategories(int userId, out bool userIsInactive, out string errorMsgOut)
         {
             userIsInactive = false;
@@ -763,29 +930,14 @@ namespace Controllers
         }
 
         /// <summary>
-        /// Converting int? to int.
+        /// Returns a string of books available by category id, amount must be > 0 of the book.
+        /// Also checks if the user's session is active. Then also returns out bool if user is inactve, and string error message
         /// </summary>
-        /// <param name="input"></param>
-        /// <returns>0 Or the value of Input</returns>
-        private int ConvertToInteger(int? input)
-        {
-            return input.HasValue ? input.Value : 0;
-        }
-
-        /// <summary>
-        /// Initializes a local timer to check if user has been active last 15 minutes. Work of progress
-        /// </summary>
-        private void SetTimer(int? userId)
-        {
-            //Converting from int? to int.
-            int id = userId.HasValue ? userId.Value : 0;
-
-            aTimer = new Timer(1000 * 60 * 15); // 1000 milisec * 60 * 15 = 15 minutes          
-            aTimer.Elapsed += (s, e) => webAPI.Ping(id);
-            aTimer.AutoReset = true;
-            aTimer.Enabled = true;
-        }
-
+        /// <param name="userInput"></param>
+        /// <param name="userId"></param>
+        /// <param name="userIsInactive"></param>
+        /// <param name="errorMsgOut"></param>
+        /// <returns>String with results</returns>
         internal string GetBooksAvailableByCategoryId(int userInput, int userId, out bool userIsInactive, out string errorMsgOut)
         {
             userIsInactive = false;
@@ -818,7 +970,16 @@ namespace Controllers
             }
         }
 
-        internal bool UserBuysBook(int userInput, int userId, out bool userIsInactive, out string errorMsgOut)
+        /// <summary>
+        /// Updates the database that a user has bought a book by parameter input
+        /// Also checks if the user's session is active. Then also returns out bool if user is inactve, and string error message
+        /// </summary>
+        /// <param name="bookId"></param>
+        /// <param name="userId"></param>
+        /// <param name="userIsInactive"></param>
+        /// <param name="errorMsgOut"></param>
+        /// <returns>True if successfull</returns>
+        internal bool UserBuysBook(int bookId, int userId, out bool userIsInactive, out string errorMsgOut)
         {
             userIsInactive = false;
             errorMsgOut = "";
@@ -832,7 +993,7 @@ namespace Controllers
             else
             {
                 //Returns False if amount of book is 0. A public int GetAmount(int bookId){} of WebbShopAPI should be implemented.
-                if (webAPI.BuyBook(userId, userInput))
+                if (webAPI.BuyBook(userId, bookId))
                 {
                     return true;
                 }
@@ -845,6 +1006,15 @@ namespace Controllers
             }
         }
 
+        /// <summary>
+        /// Returns a string with books by author from parameter input
+        /// Also checks if the user's session is active. Then also returns out bool if user is inactve, and string error message
+        /// </summary>
+        /// <param name="userInput"></param>
+        /// <param name="userId"></param>
+        /// <param name="userIsInactive"></param>
+        /// <param name="errorMsgOut"></param>
+        /// <returns>String with results</returns>
         internal string GetBooksByAuthorNameSearch(string userInput, int userId, out bool userIsInactive, out string errorMsgOut)
         {
             userIsInactive = false;
@@ -875,8 +1045,17 @@ namespace Controllers
                     return "";
                 }
             }
-        }
+        } 
 
+        /// <summary>
+        /// Returns a string of books searched for by the parameter input
+        /// Also checks if the user's session is active. Then also returns out bool if user is inactve, and string error message
+        /// </summary>
+        /// <param name="userInput"></param>
+        /// <param name="userId"></param>
+        /// <param name="userIsInactive"></param>
+        /// <param name="errorMsgOut"></param>
+        /// <returns>String with values</returns>
         internal string GetBookByName(string userInput, int userId, out bool userIsInactive, out string errorMsgOut)
         {
             userIsInactive = false;
@@ -909,7 +1088,16 @@ namespace Controllers
             }
         }
 
-        internal string GetInfoOfBookById(int userInput, int userId, out bool userIsInactive, out string errorMsgOut)
+        /// <summary>
+        /// Returns string of information about the book provided by bookId from the parameters
+        /// Also checks if the user's session is active. Then also returns out bool if user is inactve, and string error message
+        /// </summary>
+        /// <param name="bookId"></param>
+        /// <param name="userId"></param>
+        /// <param name="userIsInactive"></param>
+        /// <param name="errorMsgOut"></param>
+        /// <returns>String with results</returns>
+        internal string GetInfoOfBookById(int bookId, int userId, out bool userIsInactive, out string errorMsgOut)
         {
             userIsInactive = false;
             errorMsgOut = "";
@@ -923,7 +1111,7 @@ namespace Controllers
             else
             {
                 string results = "Results below\n";
-                var book = webAPI.GetBook(userInput);
+                var book = webAPI.GetBook(bookId);
                 if (book != null)
                 {
                     if (book.Category != null)
@@ -946,6 +1134,14 @@ namespace Controllers
             }
         }
 
+        /// <summary>
+        /// Returns a string containing all books in the database
+        /// Also checks if the user's session is active. Then also returns out bool if user is inactve, and string error message
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="userIsInactive"></param>
+        /// <param name="errorMsgOut"></param>
+        /// <returns>String with results</returns>
         internal string GetAllBooks(int userId, out bool userIsInactive, out string errorMsgOut)
         {
             userIsInactive = false;
@@ -965,8 +1161,6 @@ namespace Controllers
                 {
                     foreach (Book b in list)
                     {
-                        // results += $"Title:{b.Title}\nAuthor: {b.Author}\nPrice: {b.Price}\nAmount in stock: {b.Amount}\nCategory: {b.Category.Category}\n\n";  
-
                         results += $"ID: {b.Id}. Title: {b.Title}\n";
                     }
                     return results;
@@ -979,6 +1173,32 @@ namespace Controllers
                 }
             }
         }
-    }
 #endregion
+
+#region Private Methods
+        /// <summary>
+        /// Converting int? to int.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns>0 Or the value of Input paramter</returns>
+        private int ConvertToInteger(int? input)
+        {
+            return input.HasValue ? input.Value : 0;
+        }
+
+        /// <summary>
+        /// Initializes a local timer to check if user has been active last 15 minutes. Work of progress
+        /// </summary>
+        private void SetTimer(int? userId)
+        {
+            //Converting from int? to int.
+            int id = userId.HasValue ? userId.Value : 0;
+
+            aTimer = new Timer(1000 * 60 * 15); // 1000 milisec * 60 * 15 = 15 minutes          
+            aTimer.Elapsed += (s, e) => webAPI.Ping(id);
+            aTimer.AutoReset = true;
+            aTimer.Enabled = true;
+        }
+#endregion
+    }
 }
