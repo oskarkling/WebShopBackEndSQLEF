@@ -745,8 +745,7 @@ namespace Controllers
             //Converting from int? to int.
             int id = userId.HasValue ? userId.Value : 0;
 
-            aTimer = new Timer(1000 * 60 * 15); // 1000 milisec * 60 * 15 = 15 minutes
-            //TODO Clean up console writeline
+            aTimer = new Timer(1000 * 60 * 15); // 1000 milisec * 60 * 15 = 15 minutes          
             aTimer.Elapsed += (s, e) => webAPI.Ping(id);
             aTimer.AutoReset = true;
             aTimer.Enabled = true;

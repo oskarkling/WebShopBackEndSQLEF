@@ -596,6 +596,12 @@ namespace Controllers
 
         }
 
+
+        /// <summary>
+        /// Calls menuctontroller for input and shows the parameter to the console.
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <returns></returns>
         private int GetIntInput(string msg)
         {
             if(menuController.GetSearchIntInput(msg,
