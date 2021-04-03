@@ -8,6 +8,7 @@ namespace Controllers
     internal class PageController
     {
         List<Page> pages;
+#region Internal methods
         internal PageController()
         {
             SetupPages();
@@ -31,6 +32,10 @@ namespace Controllers
             return pageToSend;
         }
 
+        /// <summary>
+        /// Initilizes all the pages in the list "pages".
+        /// Sets values for all the pages in the list
+        /// </summary>
         private void SetupPages()
         {
             pages = new List<Page>() 
@@ -136,12 +141,8 @@ ___       ___     __   __   __           __        __   __
 "
                 }
 
-            };
-
-
-            
-                       
+            };                      
         }
-
+#endregion
     }
 }

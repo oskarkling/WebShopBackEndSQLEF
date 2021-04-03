@@ -15,6 +15,7 @@ namespace Controllers
         ViewConsole view;
         PageController pageController;
         UserInputController userInputController;
+#region Internal Methods
         internal MenuController()
         {
             view = new ViewConsole(); 
@@ -23,7 +24,7 @@ namespace Controllers
         }
 
         /// <summary>
-        /// Returns true if user want to try aggin.
+        /// Returns true if user want to try again. Returns false if user want to exit
         /// </summary>
         /// <returns>True if successful else false</returns>
         internal bool TryAgain()
@@ -48,12 +49,12 @@ namespace Controllers
         }
         
         /// <summary>
-        /// Returns LoginDetails of a users input.
+        /// Returns a bool if logindetails are valid, return out LoginDetails of a users input.
         /// </summary>
         /// <param name="tempDetails"></param>
         /// <param name="userWantToExitOut"></param>
         /// <param name="newUser"></param>
-        /// <returns>True if sucessful, else false. Bool if user want to exit and string with errormessage</returns>
+        /// <returns>True if successfull, else false. Bool if user want to exit and string with errormessage</returns>
         internal bool LoginMenu(out LoginDetails tempDetails, out bool userWantToExitOut, out bool newUser)
         {
             tempDetails = new LoginDetails();
@@ -126,6 +127,14 @@ namespace Controllers
             return true;
         }
 
+        /// <summary>
+        /// Prints the Admin Menu to the console and gets user input about menu choices
+        /// Also checks if user want to exit in out bool uswerwanttoexit, and returns out string error message
+        /// </summary>
+        /// <param name="menuChoice"></param>
+        /// <param name="userWantToExitOut"></param>
+        /// <param name="ErrorMsgOut"></param>
+        /// <returns>True if successfull, else false</returns>
         internal bool AdminMenu(out int menuChoice, out bool userWantToExitOut, out string ErrorMsgOut)
         {
             menuChoice = 0;
@@ -157,10 +166,10 @@ namespace Controllers
         }
 
         /// <summary>
-        /// Shows the menu to the user
-        /// also returns the menuc hoice from the user.
+        /// Prints the User Menu to the console and gets the user input of the menu choices
+        /// Also checks if user want to exit in out bool uswerwanttoexit, and returns out string error message
         /// </summary>
-        /// <returns>True if successful, else false. Also returns bool if user want to exit and a string error message</returns>
+        /// <returns>True if successfull, else false</returns>
         internal bool UserMenu(out int menuChoice, out bool userWantToExitOut, out string ErrorMsgOut)
         {
             menuChoice = 0;
@@ -191,6 +200,17 @@ namespace Controllers
             }
         }
 
+        /// <summary>
+        /// Prints out a message to the console by parameter input.
+        /// Then gets user input in form of a string
+        /// returns the user input in a out string input
+        /// Also checks if user want to exit in out bool uswerwanttoexit, and returns out string error message
+        /// </summary>
+        /// <param name="searchMsg"></param>
+        /// <param name="input"></param>
+        /// <param name="userWantToExitOut"></param>
+        /// <param name="returnErrorMsg"></param>
+        /// <returns>True if successful else false</returns>
         internal bool GetSearchStringInput(string searchMsg, out string input, out bool userWantToExitOut, out string returnErrorMsg)
         {
             input = "";
@@ -217,6 +237,17 @@ namespace Controllers
             }
         }
 
+        /// <summary>
+        /// Prints out a message to the console by parameter input.
+        /// Then gets user input in form of a int
+        /// returns the user input in a out int input
+        /// Also checks if user want to exit in out bool uswerwanttoexit, and returns out string error message
+        /// </summary>
+        /// <param name="searchMsg"></param>
+        /// <param name="input"></param>
+        /// <param name="userWantToExitOut"></param>
+        /// <param name="returnErrorMsg"></param>
+        /// <returns>True if successfull, else false</returns>
         internal bool GetSearchIntInput(string searchMsg, out int input, out bool userWantToExitOut, out string returnErrorMsg)
         {
             input = 0;
@@ -243,11 +274,18 @@ namespace Controllers
             }
         }
         
+        /// <summary>
+        /// Calls consoleview to clear the console window of all text
+        /// </summary>
         internal void ClearConsole()
         {
             view.ClearConsole();
         }
 
+        /// <summary>
+        /// Calls console view to clear console window then print a message to the console widow form parameter input
+        /// </summary>
+        /// <param name="msg"></param>
         internal void PrintResults(string msg)
         {
             ClearConsole();
@@ -255,7 +293,8 @@ namespace Controllers
         }
 
         /// <summary>
-        /// Prints a string to the view.
+        /// Calls console view to print a message to the console widow form parameter input
+        /// Only used for error messages May be depreciated now
         /// </summary>
         /// <param name="errorMsg"></param>
         internal void ErrorPrint(string errorMsg) 
@@ -272,19 +311,24 @@ namespace Controllers
             view.PrintToConsole(msg);
         }
 
+        /// <summary>
+        /// Load the welcome text for the console window
+        /// </summary>
         internal void Welcome()
         {
             view.Display(pageController.GetPage(PageType.Welcome));
             view.ChangeForeGroundColor(ConsoleColor.Green);
         }
+#endregion
 
+#region Private Methods
         /// <summary>
         /// Returns the LoginDetails of a users input. Also returns if the user wants to exit, and error message as a string.
         /// </summary>
         /// <param name="userLoginDetails"></param>
         /// <param name="userWantToExitOut"></param>
         /// <param name="returnErrorMsg"></param>
-        /// <returns>True if sucessful, else false. Bool if user want to exit and string with errormessage</returns>
+        /// <returns>True if sucessfull, else false. Bool if user want to exit and string with errormessage</returns>
         private bool GetLoginDetails(out LoginDetails userLoginDetails, out bool userWantToExitOut, out string returnErrorMsg)
         {
             userLoginDetails = new LoginDetails();
@@ -334,7 +378,7 @@ namespace Controllers
         /// <param name="verifiedPasswordOut"></param>
         /// <param name="userWantToExitOut"></param>
         /// <param name="returnErrorMsg"></param>
-        /// <returns>True if sucessful, else false. Bool if user want to exit and string with errormessage</returns>
+        /// <returns>True if sucessfull, else false. Bool if user want to exit and string with errormessage</returns>
         private bool Register(out LoginDetails newUserLoginDetails, out bool userWantToExitOut, out string returnErrorMsg)
         {
             newUserLoginDetails = new LoginDetails();
@@ -390,5 +434,6 @@ namespace Controllers
                 return false;
             }
         }
+#endregion
     }
 }

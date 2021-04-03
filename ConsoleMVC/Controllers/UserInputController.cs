@@ -9,11 +9,23 @@ namespace Controllers
     internal class UserInputController
     {
         
+#region Internal Methods
         internal UserInputController()
         {
 
         }
 
+        /// <summary>
+        /// Asks Console for Readline.
+        /// Then validates this input if its empty, valid or if the user wants to exit
+        /// Returns out bool userwanttoexit if user wants to exit the program(input was e or E)
+        /// If something goes wrong the out string error message gets a value 
+        /// </summary>
+        /// <param name="validUserInput"></param>
+        /// <param name="nrOfMenuOptions"></param>
+        /// <param name="userWantToExit"></param>
+        /// <param name="errorMsg"></param>
+        /// <returns>True if successfull, else false</returns>
         internal bool GetIntInput(out int validUserInput, int nrOfMenuOptions, out bool userWantToExit, out string errorMsg)
         {
             errorMsg = "";
@@ -49,6 +61,16 @@ namespace Controllers
             }
         }
 
+        /// <summary>
+        /// Asks Console for Readline.
+        /// Then validates this input if its empty, valid or if the user wants to exit
+        /// Returns out bool userwanttoexit if user wants to exit the program(input was e or E)
+        /// If something goes wrong the out string error message gets a value 
+        /// </summary>
+        /// <param name="validUserInput"></param>
+        /// <param name="userWantToExit"></param>
+        /// <param name="errorMsg"></param>
+        /// <returns>True if successfull, else false</returns>
         internal bool GetStringInput(out string validUserInput, out bool userWantToExit, out string errorMsg)
         {
             errorMsg = "";
@@ -75,9 +97,12 @@ namespace Controllers
                 return false;
             }
         }
+#endregion
 
+#region Private Methods
         /// <summary>
-        /// Checks if input is a number and within the menu options. also returns the number out int.
+        /// Checks if the string input is a number
+        /// Then checks if input is a number and within the menu options. also returns the number out int.
         /// </summary>
         /// <param name="input"></param>
         /// <param name="number"></param>
@@ -138,5 +163,6 @@ namespace Controllers
                 return false;
             }
         }
+#endregion
     }
 }
